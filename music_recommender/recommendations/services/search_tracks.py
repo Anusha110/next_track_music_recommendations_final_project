@@ -67,7 +67,8 @@ class SearchTrackService:
             # Set access token expiry with a 5 minutes buffer, so we get a new access token 5 minutes
             # before it expires
             access_token_buffer = 300
-            expires_in_with_5_minute_buffer = expires_in - access_token_buffer if expires_in > access_token_buffer else expires_in
+            expires_in_with_5_minute_buffer =\
+                  expires_in - access_token_buffer if expires_in > access_token_buffer else expires_in
 
             # Setting the access token in cache with expiry
             cache.set(cache_key, access_token, timeout=expires_in_with_5_minute_buffer)

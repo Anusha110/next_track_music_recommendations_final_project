@@ -51,7 +51,11 @@ def process_batch(artist_name_wise_track_ids):
 
     # Update Spotify Data Artist Foreign Key
     for artist_id, artist_name, _ in fetched_artists:
+
+        # Getting all the tracks for the artist
         track_ids = artist_name_wise_track_ids[artist_name]
+
+        # Bulk updating the tracks with the artist foreign key
         SpotifyTrack.objects.filter(track_id__in=track_ids).update(artist=artist_id)
 
 

@@ -233,6 +233,7 @@ async function submitPlaylistRequest(event) {
 
   try {
 
+    // Form data is a map of key-value pairs
     const formData = new FormData(el.form);
 
     const payload = Object.fromEntries(formData.entries());
@@ -240,19 +241,24 @@ async function submitPlaylistRequest(event) {
     payload.genres = Array.from(state.selectedGenres);
     payload.track_ids = Array.from(state.selectedSongs.keys());
 
+    // POST request to the backend
     const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
+    // Handle error status codes
     if (!response.ok) {
       throw new Error(`Recommendation failed with ${response.status}`);
     }
 
     const data = await response.json();
 
+    // Render playlist
     renderPlaylist(normalizeRecommendations(data));
+
+    
   } catch (error) {
     console.error(error);
     setMessage("Could not make a playlist right now. Please try again.", "error");
