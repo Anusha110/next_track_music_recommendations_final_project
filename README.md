@@ -5,15 +5,19 @@
 This project is a web application that recommends personalized playlists based on the user's preferences. The application uses Spotify's Web API to search for songs and recommends songs based on the user's preferences.
 
 The project is currently deployed on Render at https://next-track-music-recommendation.onrender.com.
-This project should ideally be ideally available until January 2027, but please note that this is not guaranteed.
+This deployment should ideally be ideally available until January 2027.
 
 
 ## Getting Started
 
-Follow these instructions to set up and run the NextTrack Music Recommender project locally.
+The frontend files are located in `frontend`
+
+The backend Django project is located at `music_recommender`
+
+This file includes the instructions to set up and run the NextTrack Music Recommender project locally.
 (Please note that the local setup requires running several scripts for the entire offline data preprocessing and ingestion pipeline. This may take up to 4 hours to complete, as there are over a million songs in the Spotify database and hundreds of thousands of artists & tags from the MusicBrainz dataset.)
 
-Also note that in order to use the Spotify Developer API, you will need to have a Spotify Premium account as of September 2026.
+Also note that in order to use the Spotify Developer API for local development/testing, you will need to have a Spotify Premium account as of September 2026.
 
 ## Prerequisites
 
@@ -60,7 +64,8 @@ To set up the local database, run the following commands:
   cd music_recommender
   ```
 
-- Load the local environment variables before running Django commands:
+- Load the local environment variables before running Django commands (see "Environment Variables"
+ section below.):
   ```bash
   set -a
   source env_local
@@ -119,14 +124,6 @@ The `env_local` file is not loaded automatically. Before running the backend, ex
 set -a
 source env_local
 set +a
-```
-
-For a Render deployment using a persistent disk, set `DATABASE_PATH` to the SQLite file location on the mounted disk. Use the following Render settings for the backend service:
-
-```text
-Root Directory: music_recommender
-Build Command: pip install -r requirements.txt && python manage.py collectstatic --no-input
-Start Command: python manage.py migrate && gunicorn music_recommender.wsgi:application --bind 0.0.0.0:$PORT
 ```
 
 ## Running and Testing the App
