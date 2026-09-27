@@ -4,7 +4,8 @@
 
 This project is a web application that recommends personalized playlists based on the user's preferences. The application uses Spotify's Web API to search for songs and recommends songs based on the user's preferences.
 
-The project is currently deployed on Render at https://nexttrack-music-recommender.onrender.com/.
+The project is currently deployed on Render at https://next-track-music-recommendation.onrender.com.
+This project should ideally be ideally available until January 2027, but please note that this is not guaranteed.
 
 
 ## Getting Started
