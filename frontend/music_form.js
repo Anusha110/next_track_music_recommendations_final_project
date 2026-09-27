@@ -2,7 +2,7 @@ const API_URL =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1"
     ? "http://127.0.0.1:8000"
-    : "https://nexttrack-music-recommender.onrender.com";
+    : "https://next-track-music-recommender.onrender.com";
 
 const MAX_SEED_SONGS = 2;
 const MAX_GENRES = 10;
