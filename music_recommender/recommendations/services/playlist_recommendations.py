@@ -1,11 +1,10 @@
 from typing import Any, Dict, Iterable, List
 from collections import defaultdict
 from recommendations.models import SpotifyTrack, SpotifyTrackEmbedding, MusicBrainzArtistTag
-import numpy as np
-from numpy.linalg import norm
 from .tag_overlap_score import TagOverlapScoreService
 from .mood_score import MoodScoreService
 from django.db.models import Q
+import math
 
 
 CANDIDATE_LIMIT = 5000
@@ -242,20 +241,25 @@ class PlaylistRecommendationService:
         return filters
 
     @staticmethod
+    # Calculate the norm/magnitude of a vector
+    def _vector_norm(vector: Iterable[float]) -> float:
+        return math.sqrt(sum(value * value for value in vector))
+
     # Calculate the cosine similarity score between two vectors
-    def _cosine_similarity(vector_a: List[float], vector_b: List[float]) -> float:
-
-        norm_a = norm(vector_a)
-        norm_b = norm(vector_b)
-
+    def _cosine_similarity(self, vector_a: List[float], vector_b: List[float]) -> float:
+        
+        norm_a = self._vector_norm(vector_a)
+        
+        norm_b = self._vector_norm(vector_b)
+        
         if norm_a == 0 or norm_b == 0:
             # Zero vectors cannot be ranked by cosine similarity because the denominator
-            # is zero. Treating them as similarity 0 keeps the recommender stable
+            # is zero. Treating them as similarity 0 keeps the recommender stable.
             return 0.0
 
-        cosine_score = np.dot(vector_a, vector_b) / (norm_a * norm_b)
+        return sum(a * b for a, b in zip(vector_a, vector_b)) / (norm_a * norm_b)
 
-        return cosine_score
+
 
     @staticmethod
     def _format_duration(duration_ms: int) -> str:
