@@ -1,0 +1,9 @@
+Django==6.1.1
+django-cors-headers==4.9.0
+djangorestframework==3.18.1
+numpy==2.5.3
+requests==2.34.2
+pandas==3.0.6 
+
+# Test dependency
+factory_boy==3.3.3
