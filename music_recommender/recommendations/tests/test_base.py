@@ -18,7 +18,7 @@ class APITestBase(TestCase):
                                                         danceability=0.2, loudness=0.5, speechiness=0.4, acousticness=0.3, instrumentalness=0.2, liveness=0.1))
 
         # medium tempo songs
-        self.tracks.extend(SpotifyTrackFactory.create_batch(5, year=2005, genre='pop', tempo=80, valence=0.5, energy=0.7,
+        self.tracks.extend(SpotifyTrackFactory.create_batch(5, year=2005, genre='pop', tempo=100, valence=0.5, energy=0.7,
                                                                 danceability=0.5, loudness=0.5, speechiness=0.4, acousticness=0.3, instrumentalness=0.2, liveness=0.1))
         self.embeddings = []
         self.artists = []

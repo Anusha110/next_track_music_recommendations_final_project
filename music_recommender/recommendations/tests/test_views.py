@@ -1,6 +1,17 @@
 from .test_base import APITestBase
 
 
+def calculate_expected_mood_score(track):
+    if track.tempo < 60.0:
+        tempo_norm = 0.0
+    elif track.tempo > 200.0:
+        tempo_norm = 1.0
+    else:
+        tempo_norm = (track.tempo - 60.0) / 140.0
+
+    return (tempo_norm + track.danceability + track.valence) / 3
+
+
 # This class tests the playlist recommendation API.
 # It tests both success and failures cases providing a good test suite.
 
@@ -74,17 +85,13 @@ class PlaylistRecommendationAPITests(APITestBase):
                         "end_year": 2005,
                 }, format='json')
 
+        self.assertEqual(responses.status_code, 200)
+        self.assertTrue(responses.data)
+
         for each in responses.data:
             track = self.track_id_wise_track[each['track_id']]
-            if track.tempo < 60.0:
-                tempo_norm = 0.0
-            elif track.tempo > 200.0:
-                tempo_norm = 1.0
-            else:
-                tempo_norm = (track.tempo - 60.0) / 140.0 # 200.0 - 60.0
-                 
-            mood_score = tempo_norm + track.danceability + track.valence/3
-            self.assertGreater(mood_score, 0.6)
+            mood_score = calculate_expected_mood_score(track)
+            self.assertGreater(mood_score, 0.7)
 
     def test_recommendations_returns_tracks_with_sad_mood(self):
 
@@ -99,18 +106,12 @@ class PlaylistRecommendationAPITests(APITestBase):
                         "end_year": 2005,
                 }, format='json')
 
+        self.assertEqual(responses.status_code, 200)
+        self.assertTrue(responses.data)
+
         for each in responses.data:
-
             track = self.track_id_wise_track[each['track_id']]
-            if track.tempo < 60.0:
-                tempo_norm = 0.0
-            elif track.tempo > 200.0:
-                tempo_norm = 1.0
-            else:
-                tempo_norm = (track.tempo - 60.0) / 140.0 # 200.0 - 60.0
-
-
-            mood_score = ((tempo_norm + track.danceability + track.valence)/3)
+            mood_score = calculate_expected_mood_score(track)
             self.assertLess(mood_score, 0.4)
 
     
@@ -127,17 +128,12 @@ class PlaylistRecommendationAPITests(APITestBase):
                         "end_year": 2005,
                 }, format='json')
 
-        for each in responses.data:
+        self.assertEqual(responses.status_code, 200)
+        self.assertTrue(responses.data)
 
+        for each in responses.data:
             track = self.track_id_wise_track[each['track_id']]
-            if track.tempo < 60.0:
-                tempo_norm = 0.0
-            elif track.tempo > 200.0:
-                tempo_norm = 1.0
-            else:
-                tempo_norm = (track.tempo - 60.0) / 140.0 # 200.0 - 60.0
-            
-            mood_score = tempo_norm + track.danceability + track.valence/3
+            mood_score = calculate_expected_mood_score(track)
 
             self.assertGreaterEqual(mood_score, 0.4)
             self.assertLessEqual(mood_score, 0.7)

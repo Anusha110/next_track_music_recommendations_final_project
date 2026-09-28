@@ -54,7 +54,7 @@ const el = {
   spotifyPlayer: document.getElementById("spotifyPlayer"),
   spotifyPlayerLabel: document.getElementById("spotifyPlayerLabel"),
   spotifyEmbed: document.getElementById("spotifyEmbed"),
-  generateButton: document.getElementByClassName("generate-button"),
+  generateButton: document.querySelector(".generate-button"),
 };
 
 el.searchButton.addEventListener("click", searchSpotify);
