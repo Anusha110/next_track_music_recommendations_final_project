@@ -166,3 +166,13 @@ configured_origins = os.environ.get(
 CORS_ALLOWED_ORIGINS = [
     origin.strip() for origin in configured_origins.split(",") if origin.strip()
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '400/day',
+    }
+}

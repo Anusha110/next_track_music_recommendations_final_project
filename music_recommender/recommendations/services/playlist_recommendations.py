@@ -273,7 +273,6 @@ class PlaylistRecommendationService:
             "track_name": track.track_name,
             "title": track.track_name,
             "artist_names": track.artist_name,
-            "artist": track.artist_name,
             "duration_ms": track.duration_ms,
             "duration": self._format_duration(track.duration_ms),
             "genre": track.genre,
