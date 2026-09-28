@@ -54,6 +54,7 @@ const el = {
   spotifyPlayer: document.getElementById("spotifyPlayer"),
   spotifyPlayerLabel: document.getElementById("spotifyPlayerLabel"),
   spotifyEmbed: document.getElementById("spotifyEmbed"),
+  generateButton: document.getElementByClassName("generate-button"),
 };
 
 el.searchButton.addEventListener("click", searchSpotify);
@@ -226,12 +227,23 @@ function addHiddenInput(name, value) {
   el.form.appendChild(input);
 }
 
+function setGenerateButtonToLoading() {
+  el.generateButton.disabled = true;
+  el.generateButton.textContent = "Generating...";
+}
+
+function setGenerateButtonToDefault() {
+  el.generateButton.disabled = false;
+  el.generateButton.textContent = "Make Playlist";
+}
 
 async function submitPlaylistRequest(event) {
   event.preventDefault();
   renderHiddenInputs();
 
   try {
+
+    setGenerateButtonToLoading();
 
     // Form data is a map of key-value pairs
     const formData = new FormData(el.form);
@@ -250,6 +262,7 @@ async function submitPlaylistRequest(event) {
 
     // Handle error status codes
     if (!response.ok) {
+      setGenerateButtonToDefault();
       throw new Error(`Recommendation failed with ${response.status}`);
     }
 
@@ -257,11 +270,12 @@ async function submitPlaylistRequest(event) {
 
     // Render playlist
     renderPlaylist(normalizeRecommendations(data));
-
+    setGenerateButtonToDefault();
     
   } catch (error) {
     console.error(error);
     setMessage("Could not make a playlist right now. Please try again.", "error");
+    setGenerateButtonToDefault();
   }
 }
 
